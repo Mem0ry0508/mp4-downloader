@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>下載歷史紀錄 — YouTube MP4 Downloader</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; background: #0f1117; color: #e0e0e0; padding: 2rem; }
+    h1 { font-size: 1.8rem; margin-bottom: 0.5rem; color: #f5c518; }
+    p.subtitle { color: #888; margin-bottom: 2rem; font-size: 0.95rem; }
+    a.back { color: #f5c518; text-decoration: none; font-size: 0.9rem; display: inline-block; margin-bottom: 1.5rem; }
+    a.back:hover { text-decoration: underline; }
+    table { width: 100%; border-collapse: collapse; background: #1a1d27; border-radius: 8px; overflow: hidden; }
+    thead { background: #23273a; }
+    th { padding: 0.8rem 1rem; text-align: left; font-size: 0.85rem; color: #aaa; font-weight: 600; }
+    td { padding: 0.75rem 1rem; font-size: 0.9rem; border-top: 1px solid #2a2d3a; word-break: break-all; }
+    .status-completed { color: #4caf50; font-weight: 600; }
+    .status-failed { color: #f44336; font-weight: 600; }
+    .status-pending { color: #ff9800; font-weight: 600; }
+    .btn-delete { background: #c0392b; color: white; border: none; padding: 0.3rem 0.7rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem; }
+    .btn-delete:hover { background: #e74c3c; }
+    .empty { text-align: center; padding: 3rem; color: #555; font-size: 1rem; }
+  </style>
+</head>
+<body>
+  <a class="back" href="/">← 回到下載頁面</a>
+  <h1>下載歷史紀錄</h1>
+  <p class="subtitle">記錄每次下載的來源、檔名、畫質與狀態。</p>
+
+  <table id="history-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>時間</th>
+        <th>來源 URL</th>
+        <th>檔名</th>
+        <th>畫質</th>
+        <th>狀態</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody id="history-body">
+      <tr><td colspan="7" class="empty">載入中...</td></tr>
+    </tbody>
+  </table>
+
+  <script>
+    async function loadHistory() {
+      const res = await fetch('/api/history');
+      const data = await res.json();
+      const tbody = document.getElementById('history-body');
+      if (!data.history || data.history.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="empty">尚無下載紀錄</td></tr>';
+        return;
+      }
+      tbody.innerHTML = data.history.map(row => {
+        const date = new Date(row.created_at).toLocaleString('zh-TW');
+        const statusClass = 'status-' + row.status;
+        const statusText = row.status === 'completed' ? '成功' : row.status === 'failed' ? '失敗' : '處理中';
+        return `<tr>
+          <td>${row.id}</td>
+          <td>${date}</td>
+          <td><a href="${row.url}" target="_blank" style="color:#f5c518">${row.url}</a></td>
+          <td>${row.filename || '—'}</td>
+          <td>${row.quality || '—'}</td>
+          <td class="${statusClass}">${statusText}</td>
+          <td><button class="btn-delete" onclick="deleteRecord(${row.id})">刪除</button></td>
+        </tr>`;
+      }).join('');
+    }
+
+    async function deleteRecord(id) {
+      if (!confirm('確定要刪除這筆紀錄？')) return;
+      await fetch('/api/history/' + id, { method: 'DELETE' });
+      loadHistory();
+    }
+
+    loadHistory();
+  </script>
+</body>
+</html>

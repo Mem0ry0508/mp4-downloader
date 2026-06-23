@@ -20,6 +20,7 @@ from urllib import error as urllib_error
 from urllib import request as urllib_request
 
 from flask import Flask, jsonify, render_template, request, send_from_directory
+from history import add_record, update_record, list_records, delete_record
 from markupsafe import Markup
 from PIL import Image, ImageDraw, ImageFont
 import requests
@@ -1781,6 +1782,7 @@ def run_download_job(job_id: str, url: str, quality: str) -> None:
         if not yt_dlp_exists():
             raise RuntimeError("yt-dlp is not installed.")
 
+        record_id = add_record(url, None, quality, "pending")
         metadata = fetch_video_metadata(normalized_url) or {}
         before = set(DOWNLOADS_DIR.iterdir())
         command = build_download_command(normalized_url, quality)
@@ -1811,6 +1813,7 @@ def run_download_job(job_id: str, url: str, quality: str) -> None:
         if completed != 0:
             stderr = output_lines[-1] if output_lines else "下載失敗，請稍後再試。"
             update_job(job_id, status="error", progress=0.0, status_key="progress.failed", status_text="", error=stderr, error_key="error.download_failed")
+            update_record(record_id, status="failed")
             return
 
         downloaded_file = find_latest_file(before)
@@ -1826,6 +1829,7 @@ def run_download_job(job_id: str, url: str, quality: str) -> None:
                 error="影片已完成，但找不到輸出檔案。",
                 error_key="error.output_missing",
             )
+            update_record(record_id, status="failed")
             return
 
         update_job(
@@ -1851,8 +1855,10 @@ def run_download_job(job_id: str, url: str, quality: str) -> None:
                 "video_id": metadata.get("video_id"),
             },
         )
+        update_record(record_id, filename=downloaded_file.name, status="completed")
     except Exception as exc:
         update_job(job_id, status="error", progress=0.0, status_key="progress.failed", status_text="", error=str(exc), error_key="error.download_failed")
+        update_record(record_id, status="failed")
 
 
 def run_burned_video_job(job_id: str, filename: str, settings: dict[str, Any] | None = None) -> None:
@@ -3043,6 +3049,20 @@ def transcripts(filename: str):
 @app.get("/captions/<path:filename>")
 def captions(filename: str):
     return send_from_directory(TRANSCRIPTS_DIR, filename, as_attachment=False)
+
+
+@app.get("/api/history")
+def get_history():
+    return jsonify({"history": list_records()})
+
+@app.get("/history")
+def history_page():
+    return render_template("history.html")
+
+@app.delete("/api/history/<int:record_id>")
+def delete_history(record_id: int):
+    ok = delete_record(record_id)
+    return jsonify({"deleted": ok})
 
 
 if __name__ == "__main__":
