@@ -1,0 +1,9 @@
+.DS_Store
+__pycache__/
+*.pyc
+cookies/
+video-storage/
+downloads/
+models/
+transcripts/
+.env.local

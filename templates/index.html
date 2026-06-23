@@ -1,0 +1,1929 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ translations['zh-Hant']['app.title'] }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+    <svg class="icon-sprite" aria-hidden="true">
+      <symbol id="icon-play" viewBox="0 0 24 24">
+        <path d="M8 6.5v11l9-5.5z" fill="currentColor"></path>
+      </symbol>
+      <symbol id="icon-download" viewBox="0 0 24 24">
+        <path d="M12 4v9m0 0 3.5-3.5M12 13 8.5 9.5M5 17.5h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+      </symbol>
+      <symbol id="icon-transcribe" viewBox="0 0 24 24">
+        <path d="M7 5.5h10M7 10h10M7 14.5h6M6 19h4l1.5-2h6A1.5 1.5 0 0 0 19 15.5v-10A1.5 1.5 0 0 0 17.5 4h-11A1.5 1.5 0 0 0 5 5.5v12A1.5 1.5 0 0 0 6.5 19z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path>
+      </symbol>
+      <symbol id="icon-check" viewBox="0 0 24 24">
+        <path d="M6.5 12.5 10 16l7.5-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+      </symbol>
+      <symbol id="icon-link" viewBox="0 0 24 24">
+        <path d="M10 14 14 10M9 7.5h7.5V15M7.5 9v7.5H15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+      </symbol>
+      <symbol id="icon-globe" viewBox="0 0 24 24">
+        <path d="M12 3.5a8.5 8.5 0 1 0 0 17a8.5 8.5 0 0 0 0-17Zm-6.5 8.5h13M12 3.8c2.1 2.2 3.3 5.2 3.3 8.2S14.1 18 12 20.2M12 3.8C9.9 6 8.7 9 8.7 12s1.2 6 3.3 8.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path>
+      </symbol>
+      <symbol id="icon-close" viewBox="0 0 24 24">
+        <path d="M7 7l10 10M17 7 7 17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"></path>
+      </symbol>
+      <symbol id="icon-burn" viewBox="0 0 24 24">
+        <path d="M13.5 4.5c.2 1.7-.6 2.8-1.9 4.1c-1.5 1.5-2.6 2.9-2.6 5a4 4 0 0 0 8 0c0-1.8-.9-3.2-2.2-4.7c-.8-.9-1.5-1.9-1.3-4.4Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="M12.2 12.1c.8 1 .8 1.8.4 2.6c-.4.7-.3 1.4.4 2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path>
+      </symbol>
+      <symbol id="icon-edit" viewBox="0 0 24 24">
+        <path d="M4.5 19.5h3.2l8.9-8.9-3.2-3.2-8.9 8.9v3.2Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path>
+        <path d="m12.7 7.3 3.2 3.2M14.6 5.4l1.7-1.7a1.6 1.6 0 0 1 2.3 0l1.7 1.7a1.6 1.6 0 0 1 0 2.3l-1.7 1.7" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path>
+      </symbol>
+      <symbol id="icon-delete" viewBox="0 0 24 24">
+        <path d="M5.5 7.5h13M9.5 4.5h5M9 10v6.5M12 10v6.5M15 10v6.5M7.5 7.5l.7 10a1.5 1.5 0 0 0 1.5 1.4h4.6a1.5 1.5 0 0 0 1.5-1.4l.7-10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path>
+      </symbol>
+    </svg>
+    <main class="shell">
+      <div class="topbar">
+        <div class="language-picker" aria-label="Language selector">
+          <span data-i18n="lang.label">{{ translations['zh-Hant']['lang.label'] }}</span>
+          <button type="button" class="language-menu-toggle" id="language-menu-toggle" aria-expanded="false">
+            <svg class="action-icon" aria-hidden="true"><use href="#icon-globe"></use></svg>
+          </button>
+          <div class="language-buttons" id="language-buttons">
+            <button type="button" class="language-button" data-language="zh-Hant">{{ translations['zh-Hant']['lang.zh-Hant'] }}</button>
+            <button type="button" class="language-button" data-language="zh-Hans">{{ translations['zh-Hant']['lang.zh-Hans'] }}</button>
+            <button type="button" class="language-button" data-language="en">{{ translations['zh-Hant']['lang.en'] }}</button>
+            <button type="button" class="language-button" data-language="ja">{{ translations['zh-Hant']['lang.ja'] }}</button>
+          </div>
+        </div>
+      </div>
+      <section class="hero">
+        <p class="eyebrow" data-i18n="hero.eyebrow">{{ translations['zh-Hant']['hero.eyebrow'] }}</p>
+        <h1 data-i18n="hero.title">{{ translations['zh-Hant']['hero.title'] }}</h1>
+        <p class="intro" data-i18n="hero.intro">{{ translations['zh-Hant']['hero.intro'] }}</p>
+
+        <div class="status-grid">
+          <article class="status-card {{ 'ready' if yt_dlp_ready else 'missing' }}">
+            <span class="status-label" data-i18n="status.ytdlp">{{ translations['zh-Hant']['status.ytdlp'] }}</span>
+            <strong data-i18n="{{ 'status.ready' if yt_dlp_ready else 'status.missing' }}">
+              {{ translations['zh-Hant']['status.ready'] if yt_dlp_ready else translations['zh-Hant']['status.missing'] }}
+            </strong>
+          </article>
+          <article class="status-card {{ 'ready' if ffmpeg_ready else 'missing' }}">
+            <span class="status-label" data-i18n="status.ffmpeg">{{ translations['zh-Hant']['status.ffmpeg'] }}</span>
+            <strong data-i18n="{{ 'status.ready' if ffmpeg_ready else 'status.optional' }}">
+              {{ translations['zh-Hant']['status.ready'] if ffmpeg_ready else translations['zh-Hant']['status.optional'] }}
+            </strong>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="input-tabs" id="input-tabs" role="tablist" aria-label="Input mode selector">
+          <button type="button" class="input-tab active" id="tab-youtube" data-tab="youtube" role="tab" aria-selected="true" data-i18n="form.tab_youtube">{{ translations['zh-Hant']['form.tab_youtube'] }}</button>
+          <button type="button" class="input-tab" id="tab-upload" data-tab="upload" role="tab" aria-selected="false" data-i18n="form.tab_upload">{{ translations['zh-Hant']['form.tab_upload'] }}</button>
+        </div>
+
+        <div class="tab-pane active" id="pane-youtube" data-pane="youtube">
+          <form class="download-form" id="download-form">
+            <label for="url" data-i18n="form.url">{{ translations['zh-Hant']['form.url'] }}</label>
+            <div class="field-row">
+              <input
+                id="url"
+                name="url"
+                type="url"
+                placeholder="{{ translations['zh-Hant']['form.url_placeholder'] }}"
+                data-i18n-placeholder="form.url_placeholder"
+                required
+              />
+            </div>
+            <div class="field-stack">
+              <label for="quality" data-i18n="form.quality">{{ translations['zh-Hant']['form.quality'] }}</label>
+              <select id="quality" name="quality">
+                {% for key, option in quality_options.items() %}
+                <option value="{{ key }}" {{ 'selected' if key == 'best' else '' }}>
+                  {{ translations['zh-Hant'][option.label_key] }}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <p class="tip" data-i18n="tip.copyright">{{ translations['zh-Hant']['tip.copyright'] }}</p>
+
+            <div class="button-row">
+              <button type="submit" id="submit-button" data-i18n="form.submit">{{ translations['zh-Hant']['form.submit'] }}</button>
+              <button type="button" id="submit-transcribe-button" data-i18n="form.submit_transcribe">{{ translations['zh-Hant']['form.submit_transcribe'] }}</button>
+            </div>
+
+            <section class="progress-panel hidden" id="progress-panel">
+              <div class="progress-header">
+                <p class="progress-kicker" data-i18n="progress.kicker">{{ translations['zh-Hant']['progress.kicker'] }}</p>
+                <strong id="progress-percent">0%</strong>
+              </div>
+              <div class="progress-track" aria-hidden="true">
+                <div class="progress-bar" id="progress-bar"></div>
+              </div>
+              <p class="progress-status" id="progress-status" data-i18n="progress.waiting">{{ translations['zh-Hant']['progress.waiting'] }}</p>
+            </section>
+
+          </form>
+        </div>
+
+        <div class="tab-pane" id="pane-upload" data-pane="upload">
+          <form class="upload-form" id="upload-form">
+            <div class="field-stack">
+              <label for="upload-title" data-i18n="upload.title">{{ translations['zh-Hant']['upload.title'] }}</label>
+              <input
+                id="upload-title"
+                name="title"
+                type="text"
+                placeholder="{{ translations['zh-Hant']['upload.title_placeholder'] }}"
+                data-i18n-placeholder="upload.title_placeholder"
+                required
+              />
+            </div>
+            <div class="field-stack">
+              <label for="upload-file" data-i18n="upload.file">{{ translations['zh-Hant']['upload.file'] }}</label>
+              <input id="upload-file" name="file" type="file" accept="video/mp4,.mp4" required />
+            </div>
+            <p class="tip" data-i18n="upload.hint">{{ translations['zh-Hant']['upload.hint'] }}</p>
+            <div class="button-row">
+              <button type="submit" id="upload-submit-button" data-i18n="upload.submit">{{ translations['zh-Hant']['upload.submit'] }}</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="message error hidden" id="error-box"></div>
+      </section>
+
+      <section class="panel transcript-panel">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title" data-i18n="stt.section_title">{{ translations['zh-Hant']['stt.section_title'] }}</h2>
+            <p class="section-intro" data-i18n="stt.section_intro">{{ translations['zh-Hant']['stt.section_intro'] }}</p>
+          </div>
+          <button type="button" class="secondary-button" id="refresh-videos" data-i18n="stt.refresh">{{ translations['zh-Hant']['stt.refresh'] }}</button>
+        </div>
+
+        <div class="field-stack compact">
+          <label for="transcription-model" data-i18n="stt.model_label">{{ translations['zh-Hant']['stt.model_label'] }}</label>
+          <select id="transcription-model" name="transcription-model">
+            {% for key, option in transcription_models.items() %}
+            <option value="{{ key }}" {{ 'selected' if key == 'small' else '' }}>
+              {{ translations['zh-Hant'][option.label_key] }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="video-list" id="video-list"></div>
+        <p class="tip hidden" id="video-empty" data-i18n="stt.empty">{{ translations['zh-Hant']['stt.empty'] }}</p>
+
+        <div class="message error hidden" id="transcript-error-box"></div>
+
+      </section>
+
+      <section class="player-modal hidden" id="player-modal" aria-hidden="true">
+        <div class="player-dialog">
+          <div class="player-head">
+            <div>
+              <h2 class="section-title" data-i18n="stt.player_title">{{ translations['zh-Hant']['stt.player_title'] }}</h2>
+              <p class="section-intro" id="player-caption-status">{{ translations['zh-Hant']['stt.player_no_captions'] }}</p>
+            </div>
+            <button type="button" class="modal-close-button player-close" id="player-close" aria-label="{{ translations['zh-Hant']['stt.player_close'] }}" title="{{ translations['zh-Hant']['stt.player_close'] }}">
+              <svg class="action-icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+            </button>
+          </div>
+          <video class="player-video" id="player-video" controls preload="metadata">
+            <track id="player-track" kind="subtitles" srclang="zh" label="Transcript captions" default />
+          </video>
+        </div>
+      </section>
+
+      <section class="status-modal hidden" id="completion-modal" aria-hidden="true">
+        <div class="status-dialog">
+          <div class="status-dialog-head">
+            <div>
+              <h2 class="section-title" data-i18n="modal.completed_title">{{ translations['zh-Hant']['modal.completed_title'] }}</h2>
+              <p class="section-intro" id="completion-message">{{ translations['zh-Hant']['modal.completed_download'] }}</p>
+            </div>
+            <button type="button" class="modal-close-button" id="completion-close" aria-label="{{ translations['zh-Hant']['modal.close'] }}" title="{{ translations['zh-Hant']['modal.close'] }}">
+              <svg class="action-icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="status-modal hidden" id="download-modal" aria-hidden="true">
+        <div class="status-dialog download-dialog">
+          <div class="status-dialog-head">
+            <div>
+              <p class="eyebrow dialog-eyebrow" data-i18n="download.modal_title">{{ translations['zh-Hant']['download.modal_title'] }}</p>
+              <h2 class="section-title" id="download-modal-title"></h2>
+            </div>
+            <button type="button" class="modal-close-button" id="download-modal-close" aria-label="{{ translations['zh-Hant']['download.modal_close'] }}" title="{{ translations['zh-Hant']['download.modal_close'] }}">
+              <svg class="action-icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+            </button>
+          </div>
+          <div class="download-section">
+            <p class="download-section-title" data-i18n="download.video">{{ translations['zh-Hant']['download.video'] }}</p>
+            <div class="download-option-list" id="download-video-options"></div>
+          </div>
+          <div class="download-section">
+            <p class="download-section-title" data-i18n="download.transcript">{{ translations['zh-Hant']['download.transcript'] }}</p>
+            <div class="download-option-list" id="download-transcript-options"></div>
+            <p class="section-intro hidden" id="download-transcript-empty" data-i18n="download.none">{{ translations['zh-Hant']['download.none'] }}</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="status-modal hidden" id="retranscribe-modal" aria-hidden="true">
+        <div class="status-dialog">
+          <div class="status-dialog-head">
+            <div>
+              <h2 class="section-title" data-i18n="retranscribe.title">{{ translations['zh-Hant']['retranscribe.title'] }}</h2>
+              <p class="section-intro" id="retranscribe-message">{{ translations['zh-Hant']['retranscribe.message'] }}</p>
+            </div>
+            <button type="button" class="modal-close-button" id="retranscribe-cancel" aria-label="{{ translations['zh-Hant']['retranscribe.cancel'] }}" title="{{ translations['zh-Hant']['retranscribe.cancel'] }}">
+              <svg class="action-icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+            </button>
+          </div>
+          <div class="confirm-actions">
+            <button type="button" id="retranscribe-confirm" data-i18n="retranscribe.confirm">{{ translations['zh-Hant']['retranscribe.confirm'] }}</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="status-modal hidden" id="delete-video-modal" aria-hidden="true">
+        <div class="status-dialog">
+          <div class="status-dialog-head">
+            <div>
+              <h2 class="section-title" data-i18n="delete_video.title">{{ translations['zh-Hant']['delete_video.title'] }}</h2>
+              <p class="section-intro" id="delete-video-message">{{ translations['zh-Hant']['delete_video.message'] }}</p>
+            </div>
+            <button type="button" class="modal-close-button" id="delete-video-cancel" aria-label="{{ translations['zh-Hant']['delete_video.cancel'] }}" title="{{ translations['zh-Hant']['delete_video.cancel'] }}">
+              <svg class="action-icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+            </button>
+          </div>
+          <div class="confirm-actions">
+            <button type="button" class="secondary-button" id="delete-video-close-action" data-i18n="delete_video.cancel">{{ translations['zh-Hant']['delete_video.cancel'] }}</button>
+            <button type="button" id="delete-video-confirm" data-i18n="delete_video.confirm">{{ translations['zh-Hant']['delete_video.confirm'] }}</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="status-modal hidden" id="subtitle-editor-modal" aria-hidden="true">
+        <div class="status-dialog subtitle-editor-dialog">
+          <div class="status-dialog-head">
+            <div>
+              <h2 class="section-title" data-i18n="subtitle.editor_title">{{ translations['zh-Hant']['subtitle.editor_title'] }}</h2>
+              <p class="section-intro" id="subtitle-editor-intro">{{ translations['zh-Hant']['subtitle.editor_intro'] }}</p>
+            </div>
+            <button type="button" class="modal-close-button" id="subtitle-editor-close" aria-label="{{ translations['zh-Hant']['subtitle.editor_cancel'] }}" title="{{ translations['zh-Hant']['subtitle.editor_cancel'] }}">
+              <svg class="action-icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+            </button>
+          </div>
+          <div class="field-stack">
+            <textarea
+              id="subtitle-editor-textarea"
+              class="subtitle-editor-textarea"
+              spellcheck="false"
+              data-i18n-placeholder="subtitle.editor_placeholder"
+              placeholder="{{ translations['zh-Hant']['subtitle.editor_placeholder'] }}"
+            ></textarea>
+          </div>
+          <div class="message error hidden" id="subtitle-editor-error"></div>
+          <div class="confirm-actions">
+            <button type="button" class="secondary-button" id="subtitle-editor-cancel" data-i18n="subtitle.editor_cancel">{{ translations['zh-Hant']['subtitle.editor_cancel'] }}</button>
+            <button type="button" id="subtitle-editor-save" data-i18n="subtitle.editor_save">{{ translations['zh-Hant']['subtitle.editor_save'] }}</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="status-modal hidden" id="burn-settings-modal" aria-hidden="true">
+        <div class="status-dialog burn-settings-dialog">
+          <div class="status-dialog-head">
+            <div>
+              <h2 class="section-title" data-i18n="burn.settings_title">{{ translations['zh-Hant']['burn.settings_title'] }}</h2>
+              <p class="section-intro" id="burn-settings-intro">{{ translations['zh-Hant']['burn.settings_intro'] }}</p>
+            </div>
+            <button type="button" class="modal-close-button" id="burn-settings-close" aria-label="{{ translations['zh-Hant']['burn.settings_cancel'] }}" title="{{ translations['zh-Hant']['burn.settings_cancel'] }}">
+              <svg class="action-icon" aria-hidden="true"><use href="#icon-close"></use></svg>
+            </button>
+          </div>
+          <div class="option-grid option-grid-two">
+            <label class="field-stack">
+              <span data-i18n="burn.settings_size">{{ translations['zh-Hant']['burn.settings_size'] }}</span>
+              <select id="burn-settings-size">
+                <option value="minus_20" data-i18n="burn.settings_size_minus_20">{{ translations['zh-Hant']['burn.settings_size_minus_20'] }}</option>
+                <option value="minus_10" data-i18n="burn.settings_size_minus_10">{{ translations['zh-Hant']['burn.settings_size_minus_10'] }}</option>
+                <option value="zero" data-i18n="burn.settings_size_zero">{{ translations['zh-Hant']['burn.settings_size_zero'] }}</option>
+                <option value="plus_10" data-i18n="burn.settings_size_plus_10">{{ translations['zh-Hant']['burn.settings_size_plus_10'] }}</option>
+                <option value="plus_20" data-i18n="burn.settings_size_plus_20">{{ translations['zh-Hant']['burn.settings_size_plus_20'] }}</option>
+                <option value="plus_30" data-i18n="burn.settings_size_plus_30">{{ translations['zh-Hant']['burn.settings_size_plus_30'] }}</option>
+              </select>
+            </label>
+            <label class="field-stack">
+              <span data-i18n="burn.settings_font_family">{{ translations['zh-Hant']['burn.settings_font_family'] }}</span>
+              <select id="burn-settings-font-family">
+                <option value="sans" data-i18n="burn.settings_font_family_sans">{{ translations['zh-Hant']['burn.settings_font_family_sans'] }}</option>
+                <option value="serif" data-i18n="burn.settings_font_family_serif">{{ translations['zh-Hant']['burn.settings_font_family_serif'] }}</option>
+                <option value="mono" data-i18n="burn.settings_font_family_mono">{{ translations['zh-Hant']['burn.settings_font_family_mono'] }}</option>
+              </select>
+            </label>
+          </div>
+          <div class="option-grid option-grid-three">
+            <label class="field-stack">
+              <span data-i18n="burn.settings_text_color">{{ translations['zh-Hant']['burn.settings_text_color'] }}</span>
+              <input id="burn-settings-text-color" type="color" value="#ffffff" />
+            </label>
+            <label class="field-stack">
+              <span data-i18n="burn.settings_outline_color">{{ translations['zh-Hant']['burn.settings_outline_color'] }}</span>
+              <input id="burn-settings-outline-color" type="color" value="#000000" />
+            </label>
+            <label class="field-stack">
+              <span><span data-i18n="burn.settings_outline_width">{{ translations['zh-Hant']['burn.settings_outline_width'] }}</span> <strong id="burn-settings-outline-width-value">0.8</strong></span>
+              <input id="burn-settings-outline-width" type="range" min="0" max="6" step="0.1" value="0.8" />
+            </label>
+          </div>
+          <div class="option-grid option-grid-two">
+            <label class="field-stack">
+              <span data-i18n="burn.settings_position">{{ translations['zh-Hant']['burn.settings_position'] }}</span>
+              <select id="burn-settings-position">
+                <option value="bottom" data-i18n="burn.settings_position_bottom">{{ translations['zh-Hant']['burn.settings_position_bottom'] }}</option>
+                <option value="middle" data-i18n="burn.settings_position_middle">{{ translations['zh-Hant']['burn.settings_position_middle'] }}</option>
+                <option value="top" data-i18n="burn.settings_position_top">{{ translations['zh-Hant']['burn.settings_position_top'] }}</option>
+              </select>
+            </label>
+            <label class="field-stack">
+              <span><span data-i18n="burn.settings_max_chars">{{ translations['zh-Hant']['burn.settings_max_chars'] }}</span> <strong id="burn-settings-max-chars-value">18</strong></span>
+              <input id="burn-settings-max-chars" type="range" min="0" max="48" step="1" value="18" />
+            </label>
+          </div>
+          <div class="option-grid option-grid-four">
+            <label class="field-stack">
+              <span><span data-i18n="burn.settings_line_spacing">{{ translations['zh-Hant']['burn.settings_line_spacing'] }}</span> <strong id="burn-settings-line-spacing-value">0</strong></span>
+              <input id="burn-settings-line-spacing" type="range" min="0" max="12" step="1" value="0" />
+            </label>
+            <label class="field-stack">
+              <span><span data-i18n="burn.settings_margin_v">{{ translations['zh-Hant']['burn.settings_margin_v'] }}</span> <strong id="burn-settings-margin-v-value">34</strong></span>
+              <input id="burn-settings-margin-v" type="range" min="8" max="96" step="2" value="34" />
+            </label>
+            <label class="field-stack">
+              <span><span data-i18n="burn.settings_margin_l">{{ translations['zh-Hant']['burn.settings_margin_l'] }}</span> <strong id="burn-settings-margin-l-value">42</strong></span>
+              <input id="burn-settings-margin-l" type="range" min="0" max="160" step="2" value="42" />
+            </label>
+            <label class="field-stack">
+              <span><span data-i18n="burn.settings_margin_r">{{ translations['zh-Hant']['burn.settings_margin_r'] }}</span> <strong id="burn-settings-margin-r-value">42</strong></span>
+              <input id="burn-settings-margin-r" type="range" min="0" max="160" step="2" value="42" />
+            </label>
+          </div>
+          <div class="option-grid option-grid-four">
+            <label class="field-stack">
+              <span data-i18n="burn.settings_profile">{{ translations['zh-Hant']['burn.settings_profile'] }}</span>
+              <select id="burn-settings-profile-select">
+                <option value="__custom__" data-i18n="burn.settings_profile_custom">{{ translations['zh-Hant']['burn.settings_profile_custom'] }}</option>
+              </select>
+            </label>
+            <label class="field-stack">
+              <span data-i18n="burn.settings_profile_name">{{ translations['zh-Hant']['burn.settings_profile_name'] }}</span>
+              <input
+                id="burn-settings-profile-name"
+                type="text"
+                data-i18n-placeholder="burn.settings_profile_name_placeholder"
+                placeholder="{{ translations['zh-Hant']['burn.settings_profile_name_placeholder'] }}"
+              />
+            </label>
+            <button type="button" class="secondary-button settings-inline-button" id="burn-settings-profile-save" data-i18n="burn.settings_profile_save">{{ translations['zh-Hant']['burn.settings_profile_save'] }}</button>
+            <button type="button" class="secondary-button settings-inline-button" id="burn-settings-profile-delete" data-i18n="burn.settings_profile_delete">{{ translations['zh-Hant']['burn.settings_profile_delete'] }}</button>
+          </div>
+          <div class="field-stack">
+            <span data-i18n="burn.settings_effects">{{ translations['zh-Hant']['burn.settings_effects'] }}</span>
+            <div class="toggle-grid">
+              <label class="toggle-option">
+                <input type="checkbox" id="burn-settings-shadow" />
+                <span data-i18n="burn.settings_shadow">{{ translations['zh-Hant']['burn.settings_shadow'] }}</span>
+              </label>
+              <label class="toggle-option">
+                <input type="checkbox" id="burn-settings-background" />
+                <span data-i18n="burn.settings_background">{{ translations['zh-Hant']['burn.settings_background'] }}</span>
+              </label>
+            </div>
+          </div>
+          <div class="option-grid color-grid hidden" id="burn-background-controls">
+            <label class="field-stack">
+              <span data-i18n="burn.settings_background_color">{{ translations['zh-Hant']['burn.settings_background_color'] }}</span>
+              <input id="burn-settings-background-color" type="color" value="#000000" />
+            </label>
+            <label class="field-stack">
+              <span><span data-i18n="burn.settings_background_opacity">{{ translations['zh-Hant']['burn.settings_background_opacity'] }}</span> <strong id="burn-settings-background-opacity-value">56</strong>%</span>
+              <input id="burn-settings-background-opacity" type="range" min="0" max="100" step="1" value="56" />
+            </label>
+            <label class="field-stack">
+              <span><span data-i18n="burn.settings_background_size">{{ translations['zh-Hant']['burn.settings_background_size'] }}</span> <strong id="burn-settings-background-size-value">32</strong></span>
+              <input id="burn-settings-background-size" type="range" min="0" max="64" step="1" value="32" />
+            </label>
+            <label class="field-stack">
+              <span><span data-i18n="burn.settings_background_radius">{{ translations['zh-Hant']['burn.settings_background_radius'] }}</span> <strong id="burn-settings-background-radius-value">22</strong></span>
+              <input id="burn-settings-background-radius" type="range" min="0" max="40" step="1" value="22" />
+            </label>
+          </div>
+          <div class="field-stack">
+            <span data-i18n="burn.settings_preview">{{ translations['zh-Hant']['burn.settings_preview'] }}</span>
+            <div class="burn-preview-stage" id="burn-preview-stage">
+              <div class="burn-preview-caption burn-preview-bottom" id="burn-preview-caption">
+                <span class="burn-preview-line" id="burn-preview-line-1" data-i18n="burn.settings_preview_line_1">{{ translations['zh-Hant']['burn.settings_preview_line_1'] }}</span>
+                <span class="burn-preview-line" id="burn-preview-line-2" data-i18n="burn.settings_preview_line_2">{{ translations['zh-Hant']['burn.settings_preview_line_2'] }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="confirm-actions">
+            <button type="button" class="secondary-button" id="burn-settings-cancel" data-i18n="burn.settings_cancel">{{ translations['zh-Hant']['burn.settings_cancel'] }}</button>
+            <button type="button" id="burn-settings-submit" data-i18n="burn.settings_submit">{{ translations['zh-Hant']['burn.settings_submit'] }}</button>
+          </div>
+        </div>
+      </section>
+      <footer class="app-footer">
+        <nav class="bottom-menu">
+          <a href="/tool-usage" class="bottom-menu-link">功能說明</a>
+          <a href="/cli-guide" class="bottom-menu-link">CLI 指引</a>
+        </nav>
+        <span>Version {{ app_version }}</span>
+      </footer>
+    </main>
+
+    <script>
+      const translations = {{ translations | tojson }};
+      const fallbackLocale = "zh-Hant";
+      const inputTabs = Array.from(document.querySelectorAll(".input-tab"));
+      const inputPanes = Array.from(document.querySelectorAll(".tab-pane"));
+      const form = document.getElementById("download-form");
+      const uploadForm = document.getElementById("upload-form");
+      const languageButtons = Array.from(document.querySelectorAll(".language-button"));
+      const languagePicker = document.querySelector(".language-picker");
+      const languageMenuToggle = document.getElementById("language-menu-toggle");
+      const submitButton = document.getElementById("submit-button");
+      const submitTranscribeButton = document.getElementById("submit-transcribe-button");
+      const uploadSubmitButton = document.getElementById("upload-submit-button");
+      const progressPanel = document.getElementById("progress-panel");
+      const progressBar = document.getElementById("progress-bar");
+      const progressPercent = document.getElementById("progress-percent");
+      const progressStatus = document.getElementById("progress-status");
+      const errorBox = document.getElementById("error-box");
+      const refreshVideosButton = document.getElementById("refresh-videos");
+      const videoList = document.getElementById("video-list");
+      const videoEmpty = document.getElementById("video-empty");
+      const transcriptionModel = document.getElementById("transcription-model");
+      const transcriptErrorBox = document.getElementById("transcript-error-box");
+      const playerModal = document.getElementById("player-modal");
+      const playerClose = document.getElementById("player-close");
+      const playerVideo = document.getElementById("player-video");
+      let playerTrack = document.getElementById("player-track");
+      const playerCaptionStatus = document.getElementById("player-caption-status");
+      const completionModal = document.getElementById("completion-modal");
+      const completionMessage = document.getElementById("completion-message");
+      const completionClose = document.getElementById("completion-close");
+      const downloadModal = document.getElementById("download-modal");
+      const downloadModalTitle = document.getElementById("download-modal-title");
+      const downloadModalClose = document.getElementById("download-modal-close");
+      const downloadVideoOptions = document.getElementById("download-video-options");
+      const downloadTranscriptOptions = document.getElementById("download-transcript-options");
+      const downloadTranscriptEmpty = document.getElementById("download-transcript-empty");
+      const retranscribeModal = document.getElementById("retranscribe-modal");
+      const retranscribeMessage = document.getElementById("retranscribe-message");
+      const retranscribeCancel = document.getElementById("retranscribe-cancel");
+      const retranscribeConfirm = document.getElementById("retranscribe-confirm");
+      const deleteVideoModal = document.getElementById("delete-video-modal");
+      const deleteVideoMessage = document.getElementById("delete-video-message");
+      const deleteVideoCancel = document.getElementById("delete-video-cancel");
+      const deleteVideoCloseAction = document.getElementById("delete-video-close-action");
+      const deleteVideoConfirm = document.getElementById("delete-video-confirm");
+      const subtitleEditorModal = document.getElementById("subtitle-editor-modal");
+      const subtitleEditorIntro = document.getElementById("subtitle-editor-intro");
+      const subtitleEditorClose = document.getElementById("subtitle-editor-close");
+      const subtitleEditorCancel = document.getElementById("subtitle-editor-cancel");
+      const subtitleEditorSave = document.getElementById("subtitle-editor-save");
+      const subtitleEditorTextarea = document.getElementById("subtitle-editor-textarea");
+      const subtitleEditorError = document.getElementById("subtitle-editor-error");
+      const burnSettingsModal = document.getElementById("burn-settings-modal");
+      const burnSettingsIntro = document.getElementById("burn-settings-intro");
+      const burnSettingsClose = document.getElementById("burn-settings-close");
+      const burnSettingsCancel = document.getElementById("burn-settings-cancel");
+      const burnSettingsSubmit = document.getElementById("burn-settings-submit");
+      const burnSettingsSize = document.getElementById("burn-settings-size");
+      const burnSettingsFontFamily = document.getElementById("burn-settings-font-family");
+      const burnSettingsPosition = document.getElementById("burn-settings-position");
+      const burnSettingsTextColor = document.getElementById("burn-settings-text-color");
+      const burnSettingsOutlineColor = document.getElementById("burn-settings-outline-color");
+      const burnSettingsOutlineWidth = document.getElementById("burn-settings-outline-width");
+      const burnSettingsOutlineWidthValue = document.getElementById("burn-settings-outline-width-value");
+      const burnBackgroundControls = document.getElementById("burn-background-controls");
+      const burnSettingsBackgroundColor = document.getElementById("burn-settings-background-color");
+      const burnSettingsBackgroundOpacity = document.getElementById("burn-settings-background-opacity");
+      const burnSettingsBackgroundOpacityValue = document.getElementById("burn-settings-background-opacity-value");
+      const burnSettingsBackgroundSize = document.getElementById("burn-settings-background-size");
+      const burnSettingsBackgroundSizeValue = document.getElementById("burn-settings-background-size-value");
+      const burnSettingsBackgroundRadius = document.getElementById("burn-settings-background-radius");
+      const burnSettingsBackgroundRadiusValue = document.getElementById("burn-settings-background-radius-value");
+      const burnSettingsLineSpacing = document.getElementById("burn-settings-line-spacing");
+      const burnSettingsLineSpacingValue = document.getElementById("burn-settings-line-spacing-value");
+      const burnSettingsMarginV = document.getElementById("burn-settings-margin-v");
+      const burnSettingsMarginVValue = document.getElementById("burn-settings-margin-v-value");
+      const burnSettingsMarginL = document.getElementById("burn-settings-margin-l");
+      const burnSettingsMarginLValue = document.getElementById("burn-settings-margin-l-value");
+      const burnSettingsMarginR = document.getElementById("burn-settings-margin-r");
+      const burnSettingsMarginRValue = document.getElementById("burn-settings-margin-r-value");
+      const burnSettingsMaxChars = document.getElementById("burn-settings-max-chars");
+      const burnSettingsMaxCharsValue = document.getElementById("burn-settings-max-chars-value");
+      const burnSettingsProfileSelect = document.getElementById("burn-settings-profile-select");
+      const burnSettingsProfileName = document.getElementById("burn-settings-profile-name");
+      const burnSettingsProfileSave = document.getElementById("burn-settings-profile-save");
+      const burnSettingsProfileDelete = document.getElementById("burn-settings-profile-delete");
+      const burnSettingsShadow = document.getElementById("burn-settings-shadow");
+      const burnSettingsBackground = document.getElementById("burn-settings-background");
+      const burnPreviewCaption = document.getElementById("burn-preview-caption");
+      const burnPreviewLine1 = document.getElementById("burn-preview-line-1");
+      const burnPreviewLine2 = document.getElementById("burn-preview-line-2");
+      const qualityLabelMap = {{ quality_options | tojson }};
+      const transcriptionModelMap = {{ transcription_models | tojson }};
+
+      let pollTimer = null;
+      let currentLocale = localStorage.getItem("ytmp4_locale") || fallbackLocale;
+      let currentVideos = [];
+      let currentCompletionMessageKey = null;
+      let currentDownloadVideo = null;
+      let currentRetranscribeVideo = null;
+      let currentDeleteVideo = null;
+      let currentSubtitleEditorVideo = null;
+      let currentBurnSettingsVideo = null;
+      const burnProfilesStorageKey = "ytmp4_burn_profiles";
+      const transcriptionStateByFile = {};
+      const transcriptionPollers = {};
+      const burnStateByFile = {};
+      const burnPollers = {};
+
+      function t(key, fallback = "") {
+        return translations[currentLocale]?.[key] || translations[fallbackLocale]?.[key] || fallback || key;
+      }
+
+      function tFormat(key, variables, fallback = "") {
+        let template = t(key, fallback);
+        Object.entries(variables || {}).forEach(([name, value]) => {
+          template = template.replaceAll(`{${name}}`, value);
+        });
+        return template;
+      }
+
+      function formatBytes(bytes) {
+        const numericBytes = Number(bytes) || 0;
+        if (numericBytes <= 0) {
+          return "0 B";
+        }
+        const units = ["B", "KB", "MB", "GB", "TB"];
+        let value = numericBytes;
+        let unitIndex = 0;
+        while (value >= 1024 && unitIndex < units.length - 1) {
+          value /= 1024;
+          unitIndex += 1;
+        }
+        const decimals = value >= 10 || unitIndex === 0 ? 0 : 1;
+        return `${value.toFixed(decimals)} ${units[unitIndex]}`;
+      }
+
+      function localizeError(data) {
+        return data?.error_key ? t(data.error_key, data.error || "") : (data?.error || t("error.download_failed"));
+      }
+
+      function localizeWarningKeys(keys) {
+        if (!Array.isArray(keys) || !keys.length) {
+          return "";
+        }
+        return keys.map((key) => t(key)).join(" ");
+      }
+
+      function applyTranslations() {
+        document.documentElement.lang = currentLocale;
+        document.title = t("app.title");
+        document.querySelectorAll("[data-i18n]").forEach((node) => {
+          node.textContent = t(node.dataset.i18n, node.textContent);
+        });
+        document.querySelectorAll("[data-i18n-placeholder]").forEach((node) => {
+          node.placeholder = t(node.dataset.i18nPlaceholder, node.placeholder);
+        });
+        Array.from(document.getElementById("quality").options).forEach((option) => {
+          const key = option.value;
+          const labelKey = qualityLabelMap[key]?.label_key;
+          if (labelKey) {
+            option.textContent = t(labelKey, option.textContent);
+          }
+        });
+        Array.from(transcriptionModel.options).forEach((option) => {
+          const labelKey = transcriptionModelMap[option.value]?.label_key;
+          if (labelKey) {
+            option.textContent = t(labelKey, option.textContent);
+          }
+        });
+        languageButtons.forEach((button) => {
+          const language = button.dataset.language;
+          button.textContent = t(`lang.${language}`, button.textContent);
+          button.classList.toggle("active", language === currentLocale);
+        });
+        languageMenuToggle.setAttribute("aria-label", t(`lang.${currentLocale}`));
+        languageMenuToggle.setAttribute("title", t(`lang.${currentLocale}`));
+        playerClose.setAttribute("aria-label", t("stt.player_close"));
+        playerClose.setAttribute("title", t("stt.player_close"));
+        completionClose.setAttribute("aria-label", t("modal.close"));
+        completionClose.setAttribute("title", t("modal.close"));
+        downloadModalClose.setAttribute("aria-label", t("download.modal_close"));
+        downloadModalClose.setAttribute("title", t("download.modal_close"));
+        retranscribeCancel.setAttribute("aria-label", t("retranscribe.cancel"));
+        retranscribeCancel.setAttribute("title", t("retranscribe.cancel"));
+        deleteVideoCancel.setAttribute("aria-label", t("delete_video.cancel"));
+        deleteVideoCancel.setAttribute("title", t("delete_video.cancel"));
+        subtitleEditorClose.setAttribute("aria-label", t("subtitle.editor_cancel"));
+        subtitleEditorClose.setAttribute("title", t("subtitle.editor_cancel"));
+        burnSettingsClose.setAttribute("aria-label", t("burn.settings_cancel"));
+        burnSettingsClose.setAttribute("title", t("burn.settings_cancel"));
+        if (currentCompletionMessageKey) {
+          completionMessage.textContent = t(currentCompletionMessageKey);
+        }
+        if (currentRetranscribeVideo) {
+          retranscribeMessage.textContent = tFormat("retranscribe.message", { title: currentRetranscribeVideo.title });
+        }
+        if (currentDeleteVideo) {
+          deleteVideoMessage.textContent = tFormat("delete_video.message", { title: currentDeleteVideo.title });
+        }
+        if (currentSubtitleEditorVideo) {
+          subtitleEditorIntro.textContent = `${t("subtitle.editor_intro")} ${currentSubtitleEditorVideo.title}`;
+        }
+        if (currentBurnSettingsVideo) {
+          burnSettingsIntro.textContent = tFormat("burn.settings_intro", { title: currentBurnSettingsVideo.title });
+        }
+        if (burnPreviewLine1 && burnPreviewLine2) {
+          burnPreviewLine1.textContent = t("burn.settings_preview_line_1");
+          burnPreviewLine2.textContent = t("burn.settings_preview_line_2");
+          updateBurnSliderLabels();
+          renderBurnPreview();
+        }
+      }
+
+      function showError(message) {
+        errorBox.textContent = message;
+        errorBox.classList.remove("hidden");
+      }
+
+      function showTranscriptError(message) {
+        transcriptErrorBox.textContent = message;
+        transcriptErrorBox.classList.remove("hidden");
+      }
+
+      function hideTranscriptError() {
+        transcriptErrorBox.textContent = "";
+        transcriptErrorBox.classList.add("hidden");
+      }
+
+      function hideError() {
+        errorBox.textContent = "";
+        errorBox.classList.add("hidden");
+      }
+
+      function hideDownloadProgress() {
+        progressPanel.classList.add("hidden");
+      }
+
+      function setInputTab(tabName) {
+        inputTabs.forEach((button) => {
+          const isActive = button.dataset.tab === tabName;
+          button.classList.toggle("active", isActive);
+          button.setAttribute("aria-selected", isActive ? "true" : "false");
+        });
+        inputPanes.forEach((pane) => {
+          pane.classList.toggle("active", pane.dataset.pane === tabName);
+        });
+        hideError();
+      }
+
+      function buildVersionedUrl(url, version) {
+        if (!url) {
+          return url;
+        }
+        const separator = url.includes("?") ? "&" : "?";
+        const token = version || Date.now();
+        return `${url}${separator}v=${encodeURIComponent(token)}`;
+      }
+
+      function resetPlayerTrack() {
+        if (playerTrack?.parentNode) {
+          playerTrack.parentNode.removeChild(playerTrack);
+        }
+        const freshTrack = document.createElement("track");
+        freshTrack.id = "player-track";
+        freshTrack.kind = "subtitles";
+        freshTrack.srclang = "zh";
+        freshTrack.label = "Transcript captions";
+        freshTrack.default = true;
+        playerVideo.appendChild(freshTrack);
+        playerTrack = freshTrack;
+      }
+
+      function closePlayerModal() {
+        playerVideo.pause();
+        playerVideo.currentTime = 0;
+        playerVideo.removeAttribute("src");
+        resetPlayerTrack();
+        playerVideo.load();
+        playerCaptionStatus.textContent = t("stt.player_no_captions");
+        playerModal.classList.add("hidden");
+        playerModal.setAttribute("aria-hidden", "true");
+      }
+
+      function openCompletionModal(messageKey) {
+        currentCompletionMessageKey = messageKey;
+        completionMessage.textContent = t(messageKey);
+        completionModal.classList.remove("hidden");
+        completionModal.setAttribute("aria-hidden", "false");
+      }
+
+      function closeCompletionModal() {
+        currentCompletionMessageKey = null;
+        completionModal.classList.add("hidden");
+        completionModal.setAttribute("aria-hidden", "true");
+      }
+
+      function closeDownloadModal() {
+        currentDownloadVideo = null;
+        downloadModal.classList.add("hidden");
+        downloadModal.setAttribute("aria-hidden", "true");
+        downloadModalTitle.textContent = "";
+        downloadVideoOptions.innerHTML = "";
+        downloadTranscriptOptions.innerHTML = "";
+        downloadTranscriptEmpty.classList.add("hidden");
+      }
+
+      function openRetranscribeModal(video) {
+        currentRetranscribeVideo = video;
+        retranscribeMessage.textContent = tFormat("retranscribe.message", { title: video.title });
+        retranscribeModal.classList.remove("hidden");
+        retranscribeModal.setAttribute("aria-hidden", "false");
+      }
+
+      function closeRetranscribeModal() {
+        currentRetranscribeVideo = null;
+        retranscribeModal.classList.add("hidden");
+        retranscribeModal.setAttribute("aria-hidden", "true");
+      }
+
+      function openDeleteVideoModal(video) {
+        currentDeleteVideo = video;
+        deleteVideoMessage.textContent = tFormat("delete_video.message", { title: video.title });
+        deleteVideoModal.classList.remove("hidden");
+        deleteVideoModal.setAttribute("aria-hidden", "false");
+      }
+
+      function closeDeleteVideoModal() {
+        currentDeleteVideo = null;
+        deleteVideoModal.classList.add("hidden");
+        deleteVideoModal.setAttribute("aria-hidden", "true");
+      }
+
+      function showSubtitleEditorError(message) {
+        subtitleEditorError.textContent = message;
+        subtitleEditorError.classList.remove("hidden");
+      }
+
+      function hideSubtitleEditorError() {
+        subtitleEditorError.textContent = "";
+        subtitleEditorError.classList.add("hidden");
+      }
+
+      function closeSubtitleEditorModal() {
+        currentSubtitleEditorVideo = null;
+        subtitleEditorTextarea.value = "";
+        hideSubtitleEditorError();
+        subtitleEditorModal.classList.add("hidden");
+        subtitleEditorModal.setAttribute("aria-hidden", "true");
+      }
+
+      function closeBurnSettingsModal() {
+        currentBurnSettingsVideo = null;
+        burnSettingsModal.classList.add("hidden");
+        burnSettingsModal.setAttribute("aria-hidden", "true");
+      }
+
+      function readStoredBurnProfiles() {
+        try {
+          const parsed = JSON.parse(localStorage.getItem(burnProfilesStorageKey) || "{}");
+          return parsed && typeof parsed === "object" ? parsed : {};
+        } catch (error) {
+          return {};
+        }
+      }
+
+      function writeStoredBurnProfiles(profiles) {
+        localStorage.setItem(burnProfilesStorageKey, JSON.stringify(profiles));
+      }
+
+      function getCurrentBurnFormSettings() {
+        return {
+          size: burnSettingsSize.value,
+          font_family: burnSettingsFontFamily.value,
+          text_color: burnSettingsTextColor.value,
+          outline_color: burnSettingsOutlineColor.value,
+          outline_width: Number(burnSettingsOutlineWidth.value) || 0,
+          position: burnSettingsPosition.value,
+          line_spacing: Number(burnSettingsLineSpacing.value) || 0,
+          margin_v: Number(burnSettingsMarginV.value) || 34,
+          margin_l: Number(burnSettingsMarginL.value) || 42,
+          margin_r: Number(burnSettingsMarginR.value) || 42,
+          shadow: burnSettingsShadow.checked,
+          background: burnSettingsBackground.checked,
+          background_color: burnSettingsBackgroundColor.value,
+          background_opacity: Number(burnSettingsBackgroundOpacity.value) || 56,
+          background_size: Number(burnSettingsBackgroundSize.value) || 32,
+          background_radius: Number(burnSettingsBackgroundRadius.value) || 22,
+          max_chars_per_line: Number(burnSettingsMaxChars.value) || 18,
+        };
+      }
+
+      function applyBurnSettingsToForm(settings = {}) {
+        burnSettingsSize.value = settings.size || "zero";
+        burnSettingsFontFamily.value = settings.font_family || "sans";
+        burnSettingsTextColor.value = settings.text_color || "#ffffff";
+        burnSettingsOutlineColor.value = settings.outline_color || "#000000";
+        burnSettingsOutlineWidth.value = String(settings.outline_width ?? 0.8);
+        burnSettingsPosition.value = settings.position || "bottom";
+        burnSettingsLineSpacing.value = String(settings.line_spacing ?? 0);
+        burnSettingsMarginV.value = String(settings.margin_v ?? 34);
+        burnSettingsMarginL.value = String(settings.margin_l ?? 42);
+        burnSettingsMarginR.value = String(settings.margin_r ?? 42);
+        burnSettingsShadow.checked = Boolean(settings.shadow);
+        burnSettingsBackground.checked = Boolean(settings.background);
+        burnSettingsBackgroundColor.value = settings.background_color || "#000000";
+        burnSettingsBackgroundOpacity.value = String(settings.background_opacity ?? 56);
+        burnSettingsBackgroundSize.value = String(settings.background_size ?? 32);
+        burnSettingsBackgroundRadius.value = String(settings.background_radius ?? 22);
+        burnSettingsMaxChars.value = String(settings.max_chars_per_line ?? 18);
+        updateBurnSliderLabels();
+        syncBurnBackgroundControls();
+        renderBurnPreview();
+      }
+
+      function refreshBurnProfileOptions(selectedKey = "__custom__") {
+        const profiles = readStoredBurnProfiles();
+        burnSettingsProfileSelect.innerHTML = "";
+        const customOption = document.createElement("option");
+        customOption.value = "__custom__";
+        customOption.textContent = t("burn.settings_profile_custom");
+        burnSettingsProfileSelect.appendChild(customOption);
+        Object.keys(profiles).sort().forEach((name) => {
+          const option = document.createElement("option");
+          option.value = name;
+          option.textContent = name;
+          burnSettingsProfileSelect.appendChild(option);
+        });
+        burnSettingsProfileSelect.value = profiles[selectedKey] ? selectedKey : "__custom__";
+      }
+
+      function updateBurnSliderLabels() {
+        burnSettingsOutlineWidthValue.textContent = Number(burnSettingsOutlineWidth.value || 0).toFixed(1);
+        burnSettingsLineSpacingValue.textContent = burnSettingsLineSpacing.value;
+        burnSettingsMarginVValue.textContent = burnSettingsMarginV.value;
+        burnSettingsMarginLValue.textContent = burnSettingsMarginL.value;
+        burnSettingsMarginRValue.textContent = burnSettingsMarginR.value;
+        burnSettingsBackgroundOpacityValue.textContent = burnSettingsBackgroundOpacity.value;
+        burnSettingsBackgroundSizeValue.textContent = burnSettingsBackgroundSize.value;
+        burnSettingsBackgroundRadiusValue.textContent = burnSettingsBackgroundRadius.value;
+        burnSettingsMaxCharsValue.textContent = burnSettingsMaxChars.value;
+      }
+
+      function syncBurnBackgroundControls() {
+        burnBackgroundControls.classList.toggle("hidden", !burnSettingsBackground.checked);
+      }
+
+      function renderBurnPreview() {
+        const sizeMultipliers = {
+          minus_20: 0.8,
+          minus_10: 0.9,
+          zero: 1,
+          plus_10: 1.1,
+          plus_20: 1.2,
+          plus_30: 1.3,
+        };
+        const positionClassMap = {
+          bottom: "burn-preview-bottom",
+          middle: "burn-preview-middle",
+          top: "burn-preview-top",
+        };
+
+        const fontSize = 18 * (sizeMultipliers[burnSettingsSize.value] || 1.2);
+        const lineHeight = 1.2 + (Number(burnSettingsLineSpacing.value) || 0) * 0.04;
+        const outlineColor = burnSettingsOutlineColor.value;
+        const outlineWidth = Math.max(0, Number(burnSettingsOutlineWidth.value) || 0);
+        const previewOutline = Math.max(0, Math.round(outlineWidth * 1.5));
+        const glowShadows = previewOutline > 0 ? [
+          `${previewOutline}px ${previewOutline}px 0 ${outlineColor}`,
+          `${-previewOutline}px ${previewOutline}px 0 ${outlineColor}`,
+          `${previewOutline}px ${-previewOutline}px 0 ${outlineColor}`,
+          `${-previewOutline}px ${-previewOutline}px 0 ${outlineColor}`,
+          `0 ${previewOutline}px 0 ${outlineColor}`,
+          `${previewOutline}px 0 0 ${outlineColor}`,
+          `0 ${-previewOutline}px 0 ${outlineColor}`,
+          `${-previewOutline}px 0 0 ${outlineColor}`,
+        ] : [];
+        if (burnSettingsShadow.checked) {
+          glowShadows.push("0 6px 14px rgba(0, 0, 0, 0.45)");
+        }
+
+        burnPreviewCaption.classList.remove("burn-preview-bottom", "burn-preview-middle", "burn-preview-top");
+        burnPreviewCaption.classList.add(positionClassMap[burnSettingsPosition.value] || "burn-preview-bottom");
+        burnPreviewCaption.style.fontSize = `${fontSize}px`;
+        burnPreviewCaption.style.lineHeight = `${lineHeight}`;
+        burnPreviewCaption.style.color = burnSettingsTextColor.value;
+        burnPreviewCaption.style.textShadow = glowShadows.join(", ");
+        burnPreviewCaption.style.fontFamily = burnSettingsFontFamily.value === "serif"
+          ? "\"Noto Serif TC\", \"Noto Serif CJK TC\", serif"
+          : burnSettingsFontFamily.value === "mono"
+            ? "\"Noto Sans Mono CJK TC\", monospace"
+            : "\"Noto Sans TC\", \"Noto Sans CJK TC\", sans-serif";
+        burnPreviewCaption.style.background = burnSettingsBackground.checked
+          ? `${burnSettingsBackgroundColor.value}${Math.round((Number(burnSettingsBackgroundOpacity.value) || 0) * 2.55).toString(16).padStart(2, "0")}`
+          : "transparent";
+        burnPreviewCaption.style.padding = burnSettingsBackground.checked
+          ? `${Math.max(10, Math.round((Number(burnSettingsBackgroundSize.value) || 32) * 0.44))}px ${Math.round((Number(burnSettingsBackgroundSize.value) || 32) * 0.25)}px`
+          : "0";
+        burnPreviewCaption.style.borderRadius = burnSettingsBackground.checked
+          ? `${Number(burnSettingsBackgroundRadius.value) || 22}px`
+          : "0";
+        burnPreviewCaption.style.marginBottom = burnSettingsPosition.value === "bottom" ? `${burnSettingsMarginV.value}px` : "0";
+        burnPreviewCaption.style.marginTop = burnSettingsPosition.value === "top" ? `${burnSettingsMarginV.value}px` : "0";
+        burnPreviewCaption.style.marginLeft = `${burnSettingsMarginL.value}px`;
+        burnPreviewCaption.style.marginRight = `${burnSettingsMarginR.value}px`;
+        burnPreviewCaption.style.maxWidth = `calc(100% - ${Number(burnSettingsMarginL.value) + Number(burnSettingsMarginR.value)}px)`;
+
+        const previewLines = [
+          t("burn.settings_preview_line_1"),
+          t("burn.settings_preview_line_2"),
+        ];
+        const maxChars = Number(burnSettingsMaxChars.value) || 0;
+        const wrappedPreview = maxChars > 0
+          ? previewLines.flatMap((line) => {
+              const chunks = [];
+              for (let index = 0; index < line.length; index += maxChars) {
+                chunks.push(line.slice(index, index + maxChars));
+              }
+              return chunks;
+            })
+          : previewLines;
+        burnPreviewCaption.innerHTML = wrappedPreview.map((line) => `<span class="burn-preview-line">${line}</span>`).join("");
+      }
+
+      function buildIcon(iconName) {
+        return `<svg class="action-icon" aria-hidden="true"><use href="#icon-${iconName}"></use></svg>`;
+      }
+
+      function createIconButton(iconName, label, variant = "secondary-button") {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = `${variant} icon-button`;
+        button.setAttribute("aria-label", label);
+        button.setAttribute("title", label);
+        button.innerHTML = buildIcon(iconName);
+        return button;
+      }
+
+      function createIconStatus(iconName, label) {
+        const status = document.createElement("span");
+        status.className = "video-status icon-status";
+        status.setAttribute("aria-label", label);
+        status.setAttribute("title", label);
+        status.innerHTML = buildIcon(iconName);
+        return status;
+      }
+
+      function createIconLink(iconName, label, href) {
+        const link = document.createElement("a");
+        link.className = "secondary-button icon-button icon-link-button";
+        link.href = href;
+        link.target = "_blank";
+        link.rel = "noreferrer";
+        link.setAttribute("aria-label", label);
+        link.setAttribute("title", label);
+        link.innerHTML = buildIcon(iconName);
+        return link;
+      }
+
+      async function triggerAssetDownload(url, filename, triggerButton) {
+        const button = triggerButton || null;
+        const originalText = button ? button.textContent : "";
+        if (button) {
+          button.disabled = true;
+          button.textContent = t("download.in_progress");
+        }
+        try {
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error(t("error.download_failed"));
+          }
+          const blob = await response.blob();
+          const objectUrl = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = objectUrl;
+          link.download = filename || "";
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          URL.revokeObjectURL(objectUrl);
+          closeDownloadModal();
+        } catch (error) {
+          showTranscriptError(error.message || t("error.download_failed"));
+        } finally {
+          if (button) {
+            button.disabled = false;
+            button.textContent = originalText;
+          }
+        }
+      }
+
+      function createDownloadOption(labelKey, asset, fallbackFilename) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "secondary-button download-option";
+        button.textContent = t(labelKey);
+        button.addEventListener("click", async () => {
+          await triggerAssetDownload(asset.url, asset.filename || fallbackFilename, button);
+        });
+        return button;
+      }
+
+      function openDownloadModal(video) {
+        currentDownloadVideo = video;
+        downloadModalTitle.textContent = video.title;
+        downloadVideoOptions.innerHTML = "";
+        downloadTranscriptOptions.innerHTML = "";
+        downloadTranscriptEmpty.classList.add("hidden");
+
+        downloadVideoOptions.appendChild(
+          createDownloadOption("download.option_video", {
+            url: video.download_url || `/files/${encodeURIComponent(video.filename)}`,
+            filename: video.filename,
+          }, video.filename)
+        );
+
+        const transcriptDownloads = video.transcript_downloads || {};
+        const transcriptOrder = [
+          ["txt", "download.option_txt"],
+          ["srt", "download.option_srt"],
+          ["vtt", "download.option_vtt"],
+          ["json", "download.option_json"],
+        ];
+
+        let transcriptCount = 0;
+        transcriptOrder.forEach(([key, labelKey]) => {
+          const asset = transcriptDownloads[key];
+          if (!asset?.url) {
+            return;
+          }
+          transcriptCount += 1;
+          downloadTranscriptOptions.appendChild(
+            createDownloadOption(labelKey, asset, `${video.filename.replace(/\.mp4$/i, "")}.${key}`)
+          );
+        });
+
+        if (!transcriptCount) {
+          downloadTranscriptEmpty.classList.remove("hidden");
+        }
+
+        downloadModal.classList.remove("hidden");
+        downloadModal.setAttribute("aria-hidden", "false");
+      }
+
+      function openPlayerModal(video) {
+        playerVideo.pause();
+        playerVideo.currentTime = 0;
+        playerVideo.removeAttribute("src");
+        resetPlayerTrack();
+        playerVideo.src = buildVersionedUrl(video.media_url, video.media_version);
+        if (video.source_type === "burned_subtitles") {
+          playerCaptionStatus.textContent = t("stt.player_burned_video");
+        } else if (video.captions_url) {
+          playerTrack.src = buildVersionedUrl(video.captions_url, video.captions_version);
+          playerTrack.mode = "showing";
+          playerCaptionStatus.textContent = t("stt.player_with_captions");
+        } else {
+          playerCaptionStatus.textContent = t("stt.player_no_captions");
+        }
+        playerVideo.load();
+        playerModal.classList.remove("hidden");
+        playerModal.setAttribute("aria-hidden", "false");
+      }
+
+      function updateProgress(progress, statusText) {
+        const safeProgress = Math.max(0, Math.min(100, Number(progress) || 0));
+        progressPanel.classList.remove("hidden");
+        progressBar.style.width = `${safeProgress}%`;
+        progressPercent.textContent = `${safeProgress.toFixed(1)}%`;
+        progressStatus.textContent = statusText || t("progress.processing");
+      }
+
+      async function pollJob(jobId) {
+        const response = await fetch(`/api/jobs/${jobId}`);
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(localizeError(data));
+        }
+
+        const translatedStatus = data.status_key ? t(data.status_key) : data.status_text;
+        updateProgress(data.progress, translatedStatus || data.status_text);
+
+        if (data.status === "completed") {
+          submitButton.disabled = false;
+          submitTranscribeButton.disabled = false;
+          clearInterval(pollTimer);
+          hideDownloadProgress();
+          loadVideos();
+        }
+
+        if (data.status === "error") {
+          submitButton.disabled = false;
+          submitTranscribeButton.disabled = false;
+          clearInterval(pollTimer);
+          showError(localizeError(data));
+        }
+
+        return data;
+      }
+
+      async function waitForDownloadCompletion(jobId) {
+        while (true) {
+          const jobData = await pollJob(jobId);
+          if (jobData.status === "running" || jobData.status === "queued") {
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            continue;
+          }
+          return jobData;
+        }
+      }
+
+      function setTranscriptionState(filename, updates) {
+        transcriptionStateByFile[filename] = {
+          ...(transcriptionStateByFile[filename] || {}),
+          ...updates,
+        };
+        renderVideoList(currentVideos);
+      }
+
+      function clearTranscriptionState(filename) {
+        delete transcriptionStateByFile[filename];
+        if (transcriptionPollers[filename]) {
+          clearTimeout(transcriptionPollers[filename]);
+          delete transcriptionPollers[filename];
+        }
+      }
+
+      function setBurnState(filename, updates) {
+        burnStateByFile[filename] = {
+          ...(burnStateByFile[filename] || {}),
+          ...updates,
+        };
+        renderVideoList(currentVideos);
+      }
+
+      function clearBurnState(filename) {
+        delete burnStateByFile[filename];
+        if (burnPollers[filename]) {
+          clearTimeout(burnPollers[filename]);
+          delete burnPollers[filename];
+        }
+      }
+
+      async function pollTranscriptJob(jobId, video) {
+        const response = await fetch(`/api/transcriptions/${jobId}`);
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(localizeError(data));
+        }
+
+        let translatedStatus = data.status_key ? t(data.status_key) : data.status_text;
+        if (data.status_key === "stt.loading_model" && data.model_cache_bytes) {
+          const sizeText = formatBytes(data.model_cache_bytes);
+          translatedStatus = data.model_download_active
+            ? tFormat("stt.loading_model_downloading", { size: sizeText }, translatedStatus)
+            : tFormat("stt.loading_model_cached", { size: sizeText }, translatedStatus);
+        }
+        setTranscriptionState(video.filename, {
+          active: true,
+          progress: data.progress,
+          statusText: translatedStatus || data.status_text,
+        });
+
+        if (data.status === "completed") {
+          submitButton.disabled = false;
+          submitTranscribeButton.disabled = false;
+          clearTranscriptionState(video.filename);
+          loadVideos();
+        }
+
+        if (data.status === "error") {
+          submitButton.disabled = false;
+          submitTranscribeButton.disabled = false;
+          clearTranscriptionState(video.filename);
+          showTranscriptError(localizeError(data));
+        }
+
+        return data;
+      }
+
+      async function monitorTranscriptJob(jobId, video) {
+        return await new Promise((resolve) => {
+          const poll = async () => {
+            try {
+              const jobData = await pollTranscriptJob(jobId, video);
+              if (jobData.status === "running" || jobData.status === "queued") {
+                transcriptionPollers[video.filename] = setTimeout(poll, 1000);
+                return;
+              }
+              resolve(jobData.status === "completed");
+            } catch (error) {
+              clearTranscriptionState(video.filename);
+              submitButton.disabled = false;
+              submitTranscribeButton.disabled = false;
+              uploadSubmitButton.disabled = false;
+              showTranscriptError(error.message || t("stt.error.status"));
+              resolve(false);
+            }
+          };
+
+          poll();
+        });
+      }
+
+      async function startTranscription(video) {
+        hideTranscriptError();
+        setTranscriptionState(video.filename, {
+          active: true,
+          progress: 0,
+          statusText: t("stt.queued"),
+        });
+
+        const response = await fetch("/api/transcriptions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            filename: video.filename,
+            model: transcriptionModel.value,
+          }),
+        });
+        const data = await response.json();
+
+        if (!response.ok) {
+          clearTranscriptionState(video.filename);
+          showTranscriptError(localizeError(data));
+          return false;
+        }
+
+        return await monitorTranscriptJob(data.job_id, video);
+      }
+
+      async function pollBurnJob(jobId, video) {
+        const response = await fetch(`/api/jobs/${jobId}`);
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(localizeError(data));
+        }
+
+        setBurnState(video.filename, {
+          active: true,
+          progress: data.progress,
+          statusText: data.status_key ? t(data.status_key) : (data.status_text || t("burn.rendering")),
+        });
+
+        if (data.status === "completed") {
+          clearBurnState(video.filename);
+          loadVideos();
+        }
+
+        if (data.status === "error") {
+          clearBurnState(video.filename);
+          showTranscriptError(localizeError(data));
+        }
+
+        return data;
+      }
+
+      async function monitorBurnJob(jobId, video) {
+        return await new Promise((resolve) => {
+          const poll = async () => {
+            try {
+              const jobData = await pollBurnJob(jobId, video);
+              if (jobData.status === "running" || jobData.status === "queued") {
+                burnPollers[video.filename] = setTimeout(poll, 1000);
+                return;
+              }
+              resolve(jobData.status === "completed");
+            } catch (error) {
+              clearBurnState(video.filename);
+              showTranscriptError(error.message || t("burn.error.start"));
+              resolve(false);
+            }
+          };
+
+          poll();
+        });
+      }
+
+      function collectBurnSettings() {
+        return getCurrentBurnFormSettings();
+      }
+
+      function openBurnSettingsModal(video) {
+        currentBurnSettingsVideo = video;
+        refreshBurnProfileOptions();
+        applyBurnSettingsToForm({});
+        burnSettingsProfileName.value = "";
+        burnSettingsIntro.textContent = tFormat("burn.settings_intro", { title: video.title });
+        burnSettingsModal.classList.remove("hidden");
+        burnSettingsModal.setAttribute("aria-hidden", "false");
+      }
+
+      async function startBurnedVideo(video, burnStyle) {
+        hideTranscriptError();
+        setBurnState(video.filename, {
+          active: true,
+          progress: 0,
+          statusText: t("burn.preparing"),
+        });
+
+        const response = await fetch("/api/burned-videos", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            filename: video.filename,
+            style: burnStyle,
+          }),
+        });
+        const data = await response.json();
+
+        if (!response.ok) {
+          clearBurnState(video.filename);
+          showTranscriptError(localizeError(data));
+          return false;
+        }
+
+        const completed = await monitorBurnJob(data.job_id, video);
+        if (completed) {
+          openCompletionModal("modal.completed_burned_video");
+        }
+        return completed;
+      }
+
+      async function openSubtitleEditor(video) {
+        currentSubtitleEditorVideo = video;
+        hideSubtitleEditorError();
+        subtitleEditorTextarea.value = "";
+        subtitleEditorIntro.textContent = `${t("subtitle.editor_intro")} ${video.title}`;
+        subtitleEditorModal.classList.remove("hidden");
+        subtitleEditorModal.setAttribute("aria-hidden", "false");
+        subtitleEditorSave.disabled = true;
+
+        try {
+          const response = await fetch(`/api/subtitles/${encodeURIComponent(video.filename)}`);
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(localizeError(data));
+          }
+          subtitleEditorTextarea.value = data.content || "";
+        } catch (error) {
+          showSubtitleEditorError(error.message || t("subtitle.error.fetch"));
+        } finally {
+          subtitleEditorSave.disabled = false;
+        }
+      }
+
+      async function saveSubtitleEditor() {
+        if (!currentSubtitleEditorVideo) {
+          return;
+        }
+
+        hideSubtitleEditorError();
+        subtitleEditorSave.disabled = true;
+
+        try {
+          const response = await fetch(`/api/subtitles/${encodeURIComponent(currentSubtitleEditorVideo.filename)}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              content: subtitleEditorTextarea.value,
+            }),
+          });
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(localizeError(data));
+          }
+          closeSubtitleEditorModal();
+          openCompletionModal("modal.completed_subtitle_save");
+          await loadVideos();
+        } catch (error) {
+          showSubtitleEditorError(error.message || t("subtitle.error.save"));
+        } finally {
+          subtitleEditorSave.disabled = false;
+        }
+      }
+
+      async function deleteCurrentVideo() {
+        if (!currentDeleteVideo) {
+          return;
+        }
+
+        const targetVideo = currentDeleteVideo;
+        hideTranscriptError();
+
+        try {
+          const response = await fetch(`/api/videos/${encodeURIComponent(targetVideo.filename)}`, {
+            method: "DELETE",
+          });
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(localizeError(data));
+          }
+
+          closeDeleteVideoModal();
+          openCompletionModal("modal.completed_delete_video");
+          await loadVideos();
+        } catch (error) {
+          showTranscriptError(error.message || t("delete_video.error.failed"));
+        }
+      }
+
+      function renderVideoList(videos) {
+        videoList.innerHTML = "";
+        if (!videos.length) {
+          videoEmpty.classList.remove("hidden");
+          return;
+        }
+
+        videoEmpty.classList.add("hidden");
+        videos.forEach((video, index) => {
+          const hasBurnableSubtitles = Boolean(video.transcript_downloads?.srt?.url);
+          const row = document.createElement("div");
+          row.className = "video-row";
+
+          const meta = document.createElement("div");
+          meta.className = "video-meta";
+
+          const titleRow = document.createElement("div");
+          titleRow.className = "video-title-row";
+
+          if (index === 0) {
+            const newBadge = document.createElement("span");
+            newBadge.className = "video-new-badge";
+            newBadge.textContent = "NEW";
+            titleRow.appendChild(newBadge);
+          }
+
+          const title = document.createElement("strong");
+          title.textContent = video.title;
+          titleRow.appendChild(title);
+          meta.appendChild(titleRow);
+
+          if (video.uploader) {
+            const author = document.createElement("span");
+            author.className = "video-detail";
+            author.textContent = `${t("video.author")} ${video.uploader}`;
+            meta.appendChild(author);
+          }
+
+          const transcriptionState = transcriptionStateByFile[video.filename];
+          const burnState = burnStateByFile[video.filename];
+          const footer = document.createElement("div");
+          footer.className = "video-footer";
+
+          const filename = document.createElement("span");
+          filename.className = "video-filename";
+          filename.textContent = video.filename;
+          footer.appendChild(filename);
+
+          const playButton = createIconButton("play", t("action.play"));
+          playButton.addEventListener("click", () => {
+            openPlayerModal(video);
+          });
+
+          const actions = document.createElement("div");
+          actions.className = "video-actions";
+          actions.appendChild(playButton);
+
+          if (video.youtube_url) {
+            actions.appendChild(createIconLink("link", t("action.source"), video.youtube_url));
+          }
+
+          const downloadButton = createIconButton("download", t("action.download"));
+          downloadButton.addEventListener("click", () => {
+            openDownloadModal(video);
+          });
+          actions.appendChild(downloadButton);
+
+          if (hasBurnableSubtitles) {
+            const editButton = createIconButton("edit", t("action.edit_subtitles"));
+            editButton.addEventListener("click", async () => {
+              await openSubtitleEditor(video);
+            });
+            actions.appendChild(editButton);
+
+            const burnButton = createIconButton("burn", t("action.burn_subtitles"));
+            burnButton.disabled = Boolean(burnState?.active);
+            burnButton.addEventListener("click", () => {
+              openBurnSettingsModal(video);
+            });
+            actions.appendChild(burnButton);
+          }
+
+          if (video.is_transcribed) {
+            const status = createIconButton("check", t("action.retranscribe"), "secondary-button icon-status-button");
+            status.addEventListener("click", () => {
+              openRetranscribeModal(video);
+            });
+            actions.appendChild(status);
+          } else {
+            const button = createIconButton("transcribe", t("action.transcribe"));
+            button.disabled = Boolean(transcriptionState?.active);
+            button.addEventListener("click", async () => {
+              await startTranscription(video);
+            });
+            actions.appendChild(button);
+          }
+
+          const deleteButton = createIconButton("delete", t("action.delete"));
+          deleteButton.addEventListener("click", () => {
+            openDeleteVideoModal(video);
+          });
+          actions.appendChild(deleteButton);
+
+          footer.appendChild(actions);
+          meta.appendChild(footer);
+
+          if (transcriptionState?.active) {
+            const rowProgress = document.createElement("div");
+            rowProgress.className = "row-progress";
+
+            const rowHeader = document.createElement("div");
+            rowHeader.className = "progress-header";
+            const rowKicker = document.createElement("p");
+            rowKicker.className = "progress-kicker";
+            rowKicker.textContent = t("stt.progress_title");
+            const rowPercent = document.createElement("strong");
+            rowPercent.textContent = `${(Number(transcriptionState.progress) || 0).toFixed(1)}%`;
+            rowHeader.appendChild(rowKicker);
+            rowHeader.appendChild(rowPercent);
+
+            const rowTrack = document.createElement("div");
+            rowTrack.className = "progress-track";
+            rowTrack.setAttribute("aria-hidden", "true");
+            const rowBar = document.createElement("div");
+            rowBar.className = "progress-bar";
+            rowBar.style.width = `${Math.max(0, Math.min(100, Number(transcriptionState.progress) || 0))}%`;
+            rowTrack.appendChild(rowBar);
+
+            const rowStatus = document.createElement("p");
+            rowStatus.className = "progress-status";
+            rowStatus.textContent = transcriptionState.statusText || t("stt.queued");
+
+            rowProgress.appendChild(rowHeader);
+            rowProgress.appendChild(rowTrack);
+            rowProgress.appendChild(rowStatus);
+            meta.appendChild(rowProgress);
+          }
+
+          if (burnState?.active) {
+            const rowProgress = document.createElement("div");
+            rowProgress.className = "row-progress";
+
+            const rowHeader = document.createElement("div");
+            rowHeader.className = "progress-header";
+            const rowKicker = document.createElement("p");
+            rowKicker.className = "progress-kicker";
+            rowKicker.textContent = t("burn.progress_title");
+            const rowPercent = document.createElement("strong");
+            rowPercent.textContent = `${(Number(burnState.progress) || 0).toFixed(1)}%`;
+            rowHeader.appendChild(rowKicker);
+            rowHeader.appendChild(rowPercent);
+
+            const rowTrack = document.createElement("div");
+            rowTrack.className = "progress-track";
+            rowTrack.setAttribute("aria-hidden", "true");
+            const rowBar = document.createElement("div");
+            rowBar.className = "progress-bar";
+            rowBar.style.width = `${Math.max(0, Math.min(100, Number(burnState.progress) || 0))}%`;
+            rowTrack.appendChild(rowBar);
+
+            const rowStatus = document.createElement("p");
+            rowStatus.className = "progress-status";
+            rowStatus.textContent = burnState.statusText || t("burn.preparing");
+
+            rowProgress.appendChild(rowHeader);
+            rowProgress.appendChild(rowTrack);
+            rowProgress.appendChild(rowStatus);
+            meta.appendChild(rowProgress);
+          }
+
+          row.appendChild(meta);
+          videoList.appendChild(row);
+        });
+      }
+
+      async function loadVideos() {
+        hideTranscriptError();
+        try {
+          const response = await fetch("/api/videos");
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(t("stt.error.fetch_videos"));
+          }
+          currentVideos = data.videos || [];
+          renderVideoList(currentVideos);
+        } catch (error) {
+          showTranscriptError(error.message || t("stt.error.fetch_videos"));
+        }
+      }
+
+      async function startDownload(autoTranscribe = false) {
+        clearInterval(pollTimer);
+        hideError();
+        hideTranscriptError();
+        closeCompletionModal();
+        updateProgress(0, t("progress.creating_job"));
+        submitButton.disabled = true;
+        submitTranscribeButton.disabled = true;
+
+        const formData = new FormData(form);
+        const payload = {
+          url: formData.get("url"),
+          quality: formData.get("quality"),
+        };
+
+        try {
+          const response = await fetch("/api/download", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(localizeError(data));
+          }
+
+          const jobData = await waitForDownloadCompletion(data.job_id);
+          if (autoTranscribe && jobData?.status === "completed" && jobData.filename) {
+            hideDownloadProgress();
+            await loadVideos();
+            const targetVideo = currentVideos.find((video) => video.filename === jobData.filename) || {
+              filename: jobData.filename,
+              title: jobData.title || jobData.filename,
+            };
+            const transcriptionCompleted = await startTranscription(targetVideo);
+            if (transcriptionCompleted) {
+              openCompletionModal("modal.completed_download_transcribe");
+            }
+          } else {
+            submitButton.disabled = false;
+            submitTranscribeButton.disabled = false;
+            if (jobData?.status === "completed") {
+              openCompletionModal("modal.completed_download");
+            }
+          }
+        } catch (error) {
+          submitButton.disabled = false;
+          submitTranscribeButton.disabled = false;
+          showError(error.message || t("error.download_failed"));
+        }
+      }
+
+      async function startUpload() {
+        hideError();
+        hideTranscriptError();
+        closeCompletionModal();
+        uploadSubmitButton.disabled = true;
+
+        const uploadTitle = uploadForm.elements.namedItem("title")?.value?.trim();
+        const uploadFile = uploadForm.elements.namedItem("file")?.files?.[0];
+        if (!uploadTitle) {
+          uploadSubmitButton.disabled = false;
+          showError(t("upload.error.title_required"));
+          return;
+        }
+        if (!uploadFile) {
+          uploadSubmitButton.disabled = false;
+          showError(t("upload.error.file_required"));
+          return;
+        }
+
+        const payload = new FormData();
+        payload.append("title", uploadTitle);
+        payload.append("file", uploadFile);
+        payload.append("model", transcriptionModel.value);
+
+        try {
+          const response = await fetch("/api/uploads", {
+            method: "POST",
+            body: payload,
+          });
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(localizeError(data));
+          }
+
+          await loadVideos();
+          const targetVideo = currentVideos.find((video) => video.filename === data.filename) || {
+            filename: data.filename,
+            title: data.title,
+          };
+
+          setTranscriptionState(targetVideo.filename, {
+            active: true,
+            progress: 0,
+            statusText: t("stt.queued"),
+          });
+          uploadForm.reset();
+          setInputTab("youtube");
+
+          if (data.transcription_job_id) {
+            await monitorTranscriptJob(data.transcription_job_id, targetVideo);
+            openCompletionModal("modal.completed_download_transcribe");
+          }
+        } catch (error) {
+          showError(error.message || t("stt.error.start"));
+        } finally {
+          uploadSubmitButton.disabled = false;
+        }
+      }
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        await startDownload(false);
+      });
+
+      uploadForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        await startUpload();
+      });
+
+      submitTranscribeButton.addEventListener("click", async () => {
+        await startDownload(true);
+      });
+
+      inputTabs.forEach((button) => {
+        button.addEventListener("click", () => {
+          setInputTab(button.dataset.tab);
+        });
+      });
+
+      currentLocale = translations[currentLocale] ? currentLocale : fallbackLocale;
+      applyTranslations();
+      setInputTab("youtube");
+      loadVideos();
+      languageMenuToggle.addEventListener("click", () => {
+        const isOpen = languagePicker.classList.toggle("open");
+        languageMenuToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+      });
+      languageButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          currentLocale = button.dataset.language;
+          localStorage.setItem("ytmp4_locale", currentLocale);
+          applyTranslations();
+          languagePicker.classList.remove("open");
+          languageMenuToggle.setAttribute("aria-expanded", "false");
+          loadVideos();
+        });
+      });
+      document.addEventListener("click", (event) => {
+        if (!languagePicker.contains(event.target)) {
+          languagePicker.classList.remove("open");
+          languageMenuToggle.setAttribute("aria-expanded", "false");
+        }
+      });
+      refreshVideosButton.addEventListener("click", loadVideos);
+      playerClose.addEventListener("click", closePlayerModal);
+      completionClose.addEventListener("click", closeCompletionModal);
+      downloadModalClose.addEventListener("click", closeDownloadModal);
+      retranscribeCancel.addEventListener("click", closeRetranscribeModal);
+      deleteVideoCancel.addEventListener("click", closeDeleteVideoModal);
+      deleteVideoCloseAction.addEventListener("click", closeDeleteVideoModal);
+      subtitleEditorClose.addEventListener("click", closeSubtitleEditorModal);
+      subtitleEditorCancel.addEventListener("click", closeSubtitleEditorModal);
+      subtitleEditorSave.addEventListener("click", saveSubtitleEditor);
+      burnSettingsClose.addEventListener("click", closeBurnSettingsModal);
+      burnSettingsCancel.addEventListener("click", closeBurnSettingsModal);
+      burnSettingsProfileSelect.addEventListener("change", () => {
+        const profiles = readStoredBurnProfiles();
+        const selectedKey = burnSettingsProfileSelect.value;
+        if (selectedKey === "__custom__" || !profiles[selectedKey]) {
+          return;
+        }
+        applyBurnSettingsToForm(profiles[selectedKey]);
+        burnSettingsProfileName.value = selectedKey;
+      });
+      burnSettingsProfileSave.addEventListener("click", () => {
+        const profileName = burnSettingsProfileName.value.trim();
+        if (!profileName) {
+          showTranscriptError(t("burn.settings_profile_name"));
+          return;
+        }
+        const profiles = readStoredBurnProfiles();
+        profiles[profileName] = getCurrentBurnFormSettings();
+        writeStoredBurnProfiles(profiles);
+        refreshBurnProfileOptions(profileName);
+      });
+      burnSettingsProfileDelete.addEventListener("click", () => {
+        const selectedKey = burnSettingsProfileSelect.value;
+        if (!selectedKey || selectedKey === "__custom__") {
+          return;
+        }
+        const profiles = readStoredBurnProfiles();
+        delete profiles[selectedKey];
+        writeStoredBurnProfiles(profiles);
+        burnSettingsProfileName.value = "";
+        refreshBurnProfileOptions();
+      });
+        [
+          burnSettingsSize,
+          burnSettingsFontFamily,
+          burnSettingsTextColor,
+          burnSettingsOutlineColor,
+          burnSettingsOutlineWidth,
+          burnSettingsPosition,
+          burnSettingsBackgroundColor,
+          burnSettingsBackgroundOpacity,
+          burnSettingsBackgroundSize,
+          burnSettingsBackgroundRadius,
+          burnSettingsLineSpacing,
+        burnSettingsMarginV,
+        burnSettingsMarginL,
+        burnSettingsMarginR,
+        burnSettingsMaxChars,
+        burnSettingsShadow,
+        burnSettingsBackground,
+      ].forEach((control) => {
+        control.addEventListener("input", () => {
+          updateBurnSliderLabels();
+          syncBurnBackgroundControls();
+          renderBurnPreview();
+          burnSettingsProfileSelect.value = "__custom__";
+        });
+        control.addEventListener("change", () => {
+          updateBurnSliderLabels();
+          syncBurnBackgroundControls();
+          renderBurnPreview();
+          burnSettingsProfileSelect.value = "__custom__";
+        });
+      });
+      burnSettingsSubmit.addEventListener("click", async () => {
+        if (!currentBurnSettingsVideo) {
+          return;
+        }
+        const targetVideo = currentBurnSettingsVideo;
+        const settings = collectBurnSettings();
+        closeBurnSettingsModal();
+        await startBurnedVideo(targetVideo, settings);
+      });
+      retranscribeConfirm.addEventListener("click", async () => {
+        if (!currentRetranscribeVideo) {
+          return;
+        }
+        const targetVideo = currentRetranscribeVideo;
+        closeRetranscribeModal();
+        await startTranscription(targetVideo);
+      });
+      deleteVideoConfirm.addEventListener("click", deleteCurrentVideo);
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !playerModal.classList.contains("hidden")) {
+          closePlayerModal();
+        }
+        if (event.key === "Escape" && !completionModal.classList.contains("hidden")) {
+          closeCompletionModal();
+        }
+        if (event.key === "Escape" && !downloadModal.classList.contains("hidden")) {
+          closeDownloadModal();
+        }
+        if (event.key === "Escape" && !retranscribeModal.classList.contains("hidden")) {
+          closeRetranscribeModal();
+        }
+        if (event.key === "Escape" && !deleteVideoModal.classList.contains("hidden")) {
+          closeDeleteVideoModal();
+        }
+        if (event.key === "Escape" && !subtitleEditorModal.classList.contains("hidden")) {
+          closeSubtitleEditorModal();
+        }
+        if (event.key === "Escape" && !burnSettingsModal.classList.contains("hidden")) {
+          closeBurnSettingsModal();
+        }
+      });
+    </script>
+  </body>
+</html>
